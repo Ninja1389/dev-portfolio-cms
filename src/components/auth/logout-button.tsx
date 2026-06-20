@@ -1,18 +1,13 @@
 "use client"
 
-import { signOut } from "@/auth"
-import { Button } from "@/components/ui/button"
-
-export function LogoutButton() {
+export function LogoutButton({ signOutAction }: { signOutAction: () => Promise<void> }) {
   return (
-    <form
-      action={async () => {
-        await signOut({ redirectTo: "/login" })
-      }}
+    <button
+      type="button"
+      onClick={() => signOutAction()}
+      className="w-full text-left"
     >
-      <Button type="submit" variant="outline">
-        Esci
-      </Button>
-    </form>
+      Esci
+    </button>
   )
 }

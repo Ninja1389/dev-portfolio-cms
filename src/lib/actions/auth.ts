@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 import bcrypt from "bcryptjs"
-import { signIn } from "@/auth"
+import { signIn, signOut } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { AuthError } from "next-auth"
 
@@ -82,6 +82,10 @@ export type LoginState = {
   }
   message?: string
 } | undefined
+
+export async function signOutAction() {
+  await signOut({ redirectTo: "/login" })
+}
 
 export async function signInWithGithub() {
   await signIn("github", { redirectTo: "/dashboard" })

@@ -25,6 +25,8 @@ model User {
   emailVerified DateTime?
   location      String?
   heroHeadline  String?
+  socialLinks   Json?
+  avatarKey     String?
   theme         String?
   image         String?
   hashedPassword String?

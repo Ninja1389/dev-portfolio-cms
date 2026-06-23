@@ -86,6 +86,7 @@ model Project {
   repoUrl     String?
   demoUrl     String?
   imageUrl    String?
+  imageKey    String?
   featured    Boolean   @default(false)
   published   Boolean   @default(false)
   order       Int       @default(0)

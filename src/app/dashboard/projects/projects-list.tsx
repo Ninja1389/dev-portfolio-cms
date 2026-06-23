@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import {
   DndContext,
@@ -194,6 +194,12 @@ function SortableRow({
 
 export function ProjectsList({ items }: { items: ProjectItem[] }) {
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const [projects, setProjects] = useState(items)
 
   const sensors = useSensors(
@@ -271,6 +277,49 @@ export function ProjectsList({ items }: { items: ProjectItem[] }) {
           Crea il tuo primo progetto per iniziare.
         </p>
       </div>
+    )
+  }
+
+  if (!mounted) {
+    return (
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-10" />
+            <TableHead>Titolo</TableHead>
+            <TableHead>Stato</TableHead>
+            <TableHead>In evidenza</TableHead>
+            <TableHead>Creato il</TableHead>
+            <TableHead className="w-[200px]">Azioni</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {projects.map((project) => (
+            <TableRow key={project.id}>
+              <TableCell className="w-10" />
+              <TableCell className="font-medium">{project.title}</TableCell>
+              <TableCell>
+                {project.published ? (
+                  <Badge variant="success">Pubblicato</Badge>
+                ) : (
+                  <Badge variant="warning">Bozza</Badge>
+                )}
+              </TableCell>
+              <TableCell>
+                {project.featured ? (
+                  <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                ) : (
+                  <span className="text-muted-foreground">—</span>
+                )}
+              </TableCell>
+              <TableCell className="text-muted-foreground text-xs">
+                {new Date(project.createdAt).toLocaleDateString("it-IT")}
+              </TableCell>
+              <TableCell />
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     )
   }
 

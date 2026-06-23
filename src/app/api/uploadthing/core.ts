@@ -17,6 +17,19 @@ export const uploadRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       return { url: file.ufsUrl ?? file.url, key: file.key }
     }),
+  projectImage: f({
+    image: { maxFileSize: "4MB", maxFileCount: 1 },
+  })
+    .middleware(async ({ req }) => {
+      const session = await auth()
+      if (!session?.user?.id) {
+        throw new Error("Non autenticato")
+      }
+      return { userId: session.user.id }
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      return { url: file.ufsUrl ?? file.url, key: file.key }
+    }),
 } satisfies FileRouter
 
 export type UploadRouter = typeof uploadRouter

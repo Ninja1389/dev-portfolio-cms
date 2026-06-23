@@ -16,7 +16,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Plus, Trash2, Upload } from "lucide-react"
 import { useUploadThing } from "@/lib/uploadthing"
-import type { ProfileState } from "@/lib/actions/profile"
+import type { ProfileState } from "@/lib/profile"
 
 type SocialLink = { platform: string; url: string }
 

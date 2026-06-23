@@ -18,7 +18,7 @@ import {
 import { Upload } from "lucide-react"
 import { useUploadThing } from "@/lib/uploadthing"
 import { generateSlug } from "@/lib/actions/projects"
-import type { ProjectState, ProjectFormData } from "@/lib/actions/projects"
+import type { ProjectState, ProjectFormData } from "@/lib/projects"
 
 type Action = (
   prev: ProjectState,

@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "docker:up": "docker compose up --build",
+    "docker:dev": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:reset": "docker compose down -v",
+    "docker:logs": "docker compose logs -f",
+    "docker:logs:app": "docker compose logs -f app",
+    "docker:logs:db": "docker compose logs -f db"
   },
   "overrides": {
     "effect": "3.17.7"

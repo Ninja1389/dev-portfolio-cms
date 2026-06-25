@@ -8,7 +8,6 @@ import {
   FolderKanban,
   Briefcase,
   Code2,
-  Newspaper,
   MessageSquare,
   Settings,
 } from "lucide-react"
@@ -20,7 +19,6 @@ const navItems = [
   { href: "/dashboard/projects", label: "Progetti", icon: FolderKanban },
   { href: "/dashboard/experiences", label: "Esperienze", icon: Briefcase },
   { href: "/dashboard/skills", label: "Skills", icon: Code2 },
-  { href: "/dashboard/blog", label: "Blog", icon: Newspaper },
   { href: "/dashboard/messages", label: "Messaggi", icon: MessageSquare },
   { href: "/dashboard/settings", label: "Impostazioni", icon: Settings },
 ]

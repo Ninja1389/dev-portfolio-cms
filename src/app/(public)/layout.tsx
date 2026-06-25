@@ -24,6 +24,7 @@ export default async function PublicLayout({ children }: { children: React.React
             <Link href="/" className="hover:text-gray-900 transition-colors">Home</Link>
             <Link href="/about" className="hover:text-gray-900 transition-colors">About</Link>
             <Link href="/projects" className="hover:text-gray-900 transition-colors">Progetti</Link>
+            <Link href="/contact" className="hover:text-gray-900 transition-colors">Contatti</Link>
           </div>
         </nav>
       </header>

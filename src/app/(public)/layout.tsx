@@ -14,7 +14,7 @@ export default async function PublicLayout({ children }: { children: React.React
   const user = await prisma.user.findFirst()
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="flex min-h-screen flex-col bg-white text-gray-900">
       <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-md">
         <nav className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
           <Link href="/" className="text-lg font-bold tracking-tight">
@@ -28,7 +28,7 @@ export default async function PublicLayout({ children }: { children: React.React
         </nav>
       </header>
 
-      <main>{children}</main>
+      <main className="flex-1">{children}</main>
 
       <footer className="border-t border-gray-100">
         <div className="mx-auto max-w-4xl px-6 py-8 text-center text-sm text-gray-400">

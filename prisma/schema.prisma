@@ -89,6 +89,8 @@ model Project {
   featured    Boolean   @default(false)
   published   Boolean   @default(false)
   order       Int       @default(0)
+  githubRepoId String?
+  githubMeta   Json?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -96,6 +98,7 @@ model Project {
   projectViews ProjectView[]
 
   @@index([userId])
+  @@index([githubRepoId])
 }
 
 model Experience {

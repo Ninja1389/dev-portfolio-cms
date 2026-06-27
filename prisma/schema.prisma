@@ -96,6 +96,7 @@ model Project {
 
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   projectViews ProjectView[]
+  clickEvents  ClickEvent[]
 
   @@index([userId])
   @@index([githubRepoId])
@@ -165,4 +166,17 @@ model PageView {
 
   @@index([path])
   @@index([viewedAt])
+}
+
+model ClickEvent {
+  id        String   @id @default(cuid())
+  projectId String
+  type      String
+  url       String
+  clickedAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([clickedAt])
 }

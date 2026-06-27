@@ -1,4 +1,5 @@
-import { FolderKanban, Newspaper, MessageSquare, Eye } from "lucide-react"
+import { getOverviewStats } from "@/lib/analytics/queries"
+import { FolderKanban, MessageSquare, Eye, MousePointerClick } from "lucide-react"
 import {
   Card,
   CardContent,
@@ -6,34 +7,9 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-const mockStats = [
-  {
-    title: "Progetti",
-    value: "12",
-    description: "8 pubblicati, 4 bozze",
-    icon: FolderKanban,
-  },
-  {
-    title: "Articoli Blog",
-    value: "24",
-    description: "18 pubblicati, 6 bozze",
-    icon: Newspaper,
-  },
-  {
-    title: "Messaggi",
-    value: "5",
-    description: "3 non letti",
-    icon: MessageSquare,
-  },
-  {
-    title: "Visite Totali",
-    value: "1.234",
-    description: "Negli ultimi 30 giorni",
-    icon: Eye,
-  },
-]
+export default async function DashboardPage() {
+  const stats = await getOverviewStats()
 
-export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
@@ -44,53 +20,55 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {mockStats.map((stat) => (
-          <Card key={stat.title}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                {stat.title}
-              </CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">
-                {stat.description}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
         <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Attività Recenti</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Progetti</CardTitle>
+            <FolderKanban className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">
-            <p>Nessuna attività recente. Inizia a creare contenuti per il tuo portfolio.</p>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalProjects}</div>
+            <p className="text-xs text-muted-foreground">
+              {stats.publishedProjects} pubblicati, {stats.totalProjects - stats.publishedProjects} bozze
+            </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Prossimi Passi</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Messaggi</CardTitle>
+            <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                Completa il tuo profilo
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                Aggiungi i tuoi progetti
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                Pubblica il tuo primo articolo
-              </li>
-            </ul>
+            <div className="text-2xl font-bold">{stats.totalMessages}</div>
+            <p className="text-xs text-muted-foreground">
+              {stats.unreadMessages} non letti
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Visite Portfolio (30gg)</CardTitle>
+            <Eye className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalPageViews30d}</div>
+            <p className="text-xs text-muted-foreground">
+              + {stats.totalProjectViews30d} visite progetti
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Click Esterni</CardTitle>
+            <MousePointerClick className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalClickEvents}</div>
+            <p className="text-xs text-muted-foreground">
+              Su link repo e demo
+            </p>
           </CardContent>
         </Card>
       </div>

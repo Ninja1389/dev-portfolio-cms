@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
+import { PageViewTracker } from "@/components/tracking/page-view-tracker"
 
 export async function generateMetadata(): Promise<Metadata> {
   const user = await prisma.user.findFirst()
@@ -45,6 +46,7 @@ export default async function PublicLayout({ children }: { children: React.React
       </header>
 
       <main className="flex-1">{children}</main>
+      <PageViewTracker />
 
       <footer className="border-t border-gray-100">
         <div className="mx-auto max-w-4xl px-6 py-8 text-center text-sm text-gray-400">

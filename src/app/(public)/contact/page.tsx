@@ -1,11 +1,29 @@
-import type { Metadata } from "next"
 import { ContactForm } from "./contact-form"
 import { Mail, MapPin } from "lucide-react"
 import { prisma } from "@/lib/prisma"
+import type { Metadata } from "next"
 
-export const metadata: Metadata = {
-  title: "Contatti",
-  description: "Contattami per collaborazioni, progetti o informazioni.",
+export async function generateMetadata(): Promise<Metadata> {
+  const user = await prisma.user.findFirst()
+  const title = "Contatti"
+  const description = "Contattami per collaborazioni, progetti o informazioni."
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: user?.avatarUrl
+        ? [{ url: user.avatarUrl, width: 1200, height: 630 }]
+        : [{ url: "/api/og?title=Contatti", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: user?.avatarUrl ? [user.avatarUrl] : ["/api/og?title=Contatti"],
+    },
+  }
 }
 
 export default async function ContactPage() {

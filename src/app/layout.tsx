@@ -14,9 +14,23 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"
+
 export const metadata: Metadata = {
-  title: "DevPortfolio CMS",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "DevPortfolio CMS",
+    template: "%s — DevPortfolio CMS",
+  },
   description: "Developer Portfolio Content Management System",
+  openGraph: {
+    siteName: "DevPortfolio CMS",
+    locale: "it_IT",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default async function RootLayout({

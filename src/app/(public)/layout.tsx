@@ -4,9 +4,24 @@ import { prisma } from "@/lib/prisma"
 
 export async function generateMetadata(): Promise<Metadata> {
   const user = await prisma.user.findFirst()
+  const title = user?.name ? `${user.name} — Portfolio` : "Portfolio"
+  const description = user?.heroHeadline ?? user?.bio ?? ""
   return {
-    title: user?.name ? `${user.name} — Portfolio` : "Portfolio",
-    description: user?.heroHeadline ?? user?.bio ?? "",
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: user?.avatarUrl
+        ? [{ url: user.avatarUrl, width: 1200, height: 630 }]
+        : [{ url: "/api/og?title=Portfolio", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: user?.avatarUrl ? [user.avatarUrl] : ["/api/og?title=Portfolio"],
+    },
   }
 }
 

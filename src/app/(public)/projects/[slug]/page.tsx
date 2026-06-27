@@ -13,10 +13,26 @@ export async function generateMetadata(props: {
     select: { title: true, description: true, imageUrl: true },
   })
   if (!project) return {}
+  const title = `${project.title} — Progetti`
+  const description = project.description ?? ""
+  const ogTitle = encodeURIComponent(project.title)
+  const images = project.imageUrl
+    ? [{ url: project.imageUrl, width: 1200, height: 630 }]
+    : [{ url: `/api/og?title=${ogTitle}`, width: 1200, height: 630 }]
   return {
-    title: `${project.title} — Progetti`,
-    description: project.description ?? "",
-    openGraph: project.imageUrl ? { images: [project.imageUrl] } : undefined,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: project.imageUrl ? [project.imageUrl] : [`/api/og?title=${ogTitle}`],
+    },
   }
 }
 

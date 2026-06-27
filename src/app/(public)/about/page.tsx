@@ -1,5 +1,29 @@
+import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
 import { GitFork, Globe, Mail } from "lucide-react"
+
+export async function generateMetadata(): Promise<Metadata> {
+  const user = await prisma.user.findFirst()
+  const title = `About — ${user?.name ?? "Portfolio"}`
+  const description = user?.bio ?? "Scopri di più su di me e le mie esperienze."
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: user?.avatarUrl
+        ? [{ url: user.avatarUrl, width: 1200, height: 630 }]
+        : [{ url: "/api/og?title=About", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: user?.avatarUrl ? [user.avatarUrl] : ["/api/og?title=About"],
+    },
+  }
+}
 
 export default async function AboutPage() {
   const user = await prisma.user.findFirst()

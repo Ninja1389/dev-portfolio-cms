@@ -1,6 +1,23 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 import { GitFork, ExternalLink } from "lucide-react"
+
+export const metadata: Metadata = {
+  title: "Progetti",
+  description: "Una selezione dei miei lavori e progetti.",
+  openGraph: {
+    title: "Progetti",
+    description: "Una selezione dei miei lavori e progetti.",
+    images: [{ url: "/api/og?title=Progetti", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Progetti",
+    description: "Una selezione dei miei lavori e progetti.",
+    images: ["/api/og?title=Progetti"],
+  },
+}
 
 export default async function ProjectsPage({
   searchParams,

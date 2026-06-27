@@ -9,6 +9,7 @@ import {
   Briefcase,
   Code2,
   MessageSquare,
+  GitFork,
   Settings,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -20,6 +21,7 @@ const navItems = [
   { href: "/dashboard/experiences", label: "Esperienze", icon: Briefcase },
   { href: "/dashboard/skills", label: "Skills", icon: Code2 },
   { href: "/dashboard/messages", label: "Messaggi", icon: MessageSquare },
+  { href: "/dashboard/integrations/github", label: "GitHub", icon: GitFork },
   { href: "/dashboard/settings", label: "Impostazioni", icon: Settings },
 ]
 

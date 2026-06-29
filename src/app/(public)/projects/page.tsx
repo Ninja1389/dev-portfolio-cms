@@ -61,10 +61,10 @@ export default async function ProjectsPage({
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
-      <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+      <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
         Progetti
       </h1>
-      <p className="mt-2 text-gray-500">
+      <p className="mt-2 text-muted-foreground">
         Una selezione dei miei lavori.
       </p>
 
@@ -75,8 +75,8 @@ export default async function ProjectsPage({
             href="/projects"
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
               !category
-                ? "bg-gray-900 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground hover:bg-accent"
             }`}
           >
             Tutti
@@ -87,8 +87,8 @@ export default async function ProjectsPage({
               href={`/projects?category=${cat}`}
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                 category === cat
-                  ? "bg-gray-900 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-accent"
               }`}
             >
               {categoryLabel(cat)}
@@ -99,7 +99,7 @@ export default async function ProjectsPage({
 
       {projects.length === 0 ? (
         <div className="mt-16 text-center">
-          <p className="text-gray-400">Nessun progetto pubblicato al momento.</p>
+          <p className="text-muted-foreground">Nessun progetto pubblicato al momento.</p>
         </div>
       ) : (
         <div className="mt-10 grid gap-6 md:grid-cols-2">
@@ -107,7 +107,7 @@ export default async function ProjectsPage({
             <Link
               key={project.id}
               href={`/projects/${project.slug}`}
-              className="group rounded-xl border border-gray-200 bg-white p-5 transition-all hover:shadow-md hover:-translate-y-0.5"
+              className="group rounded-xl border border-border bg-card p-5 transition-all hover:shadow-md hover:-translate-y-0.5"
             >
               {project.imageUrl && (
                 <div className="mb-4 overflow-hidden rounded-lg">
@@ -118,22 +118,22 @@ export default async function ProjectsPage({
                   />
                 </div>
               )}
-              <h2 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+              <h2 className="font-semibold text-foreground group-hover:text-[var(--accent-custom)] transition-colors">
                 {project.title}
               </h2>
               {project.description && (
-                <p className="mt-1.5 text-sm leading-relaxed text-gray-500 line-clamp-2">
+                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground line-clamp-2">
                   {project.description}
                 </p>
               )}
               <div className="mt-3 flex items-center gap-3">
                 {project.repoUrl && (
-                  <span className="text-xs text-gray-400 hover:text-gray-600 transition-colors inline-flex items-center gap-1">
+                  <span className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1">
                     <GitFork className="h-3.5 w-3.5" /> Codice
                   </span>
                 )}
                 {project.demoUrl && (
-                  <span className="text-xs text-gray-400 hover:text-gray-600 transition-colors inline-flex items-center gap-1">
+                  <span className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1">
                     <ExternalLink className="h-3.5 w-3.5" /> Demo
                   </span>
                 )}

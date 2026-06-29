@@ -8,12 +8,13 @@ import { ProjectViewRecorder, ExternalLinkTracker } from "@/components/tracking/
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await props.params
-  const project = await prisma.project.findUnique({
-    where: { slug },
-    select: { title: true, description: true, imageUrl: true },
-  })
-  if (!project) return {}
+  try {
+    const { slug } = await props.params
+    const project = await prisma.project.findUnique({
+      where: { slug },
+      select: { title: true, description: true, imageUrl: true },
+    })
+    if (!project) return {}
   const title = `${project.title} — Progetti`
   const description = project.description ?? ""
   const ogTitle = encodeURIComponent(project.title)
@@ -34,6 +35,9 @@ export async function generateMetadata(props: {
       description,
       images: project.imageUrl ? [project.imageUrl] : [`/api/og?title=${ogTitle}`],
     },
+  }
+  } catch {
+    return {}
   }
 }
 
@@ -64,7 +68,7 @@ export default async function ProjectDetailPage(props: {
 
       <Link
         href="/projects"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-8"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
       >
         <ArrowLeft className="h-4 w-4" /> Torna ai progetti
       </Link>
@@ -79,7 +83,7 @@ export default async function ProjectDetailPage(props: {
         </div>
       )}
 
-      <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+      <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
         {project.title}
       </h1>
 
@@ -89,11 +93,11 @@ export default async function ProjectDetailPage(props: {
             projectId={project.id}
             type="repo"
             url={project.repoUrl}
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:border-border transition-colors"
           >
             <GitFork className="h-4 w-4" />
             Codice sorgente
-            <ExternalLink className="h-3.5 w-3.5 text-gray-400" />
+            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
           </ExternalLinkTracker>
         )}
         {project.demoUrl && (
@@ -101,24 +105,24 @@ export default async function ProjectDetailPage(props: {
             projectId={project.id}
             type="demo"
             url={project.demoUrl}
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:border-border transition-colors"
           >
             <ExternalLink className="h-4 w-4" />
             Demo live
-            <ExternalLink className="h-3.5 w-3.5 text-gray-400" />
+            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
           </ExternalLinkTracker>
         )}
       </div>
 
       {project.description && (
-        <div className="mt-8 prose prose-sm max-w-none text-gray-600">
+        <div className="mt-8 prose prose-sm max-w-none text-muted-foreground">
           {project.description.split("\n").map((line, i) => (
             <p key={i}>{line}</p>
           ))}
         </div>
       )}
 
-      <div className="mt-12 border-t border-gray-100 pt-6 text-xs text-gray-400">
+      <div className="mt-12 border-t border-border pt-6 text-xs text-muted-foreground">
         Creato il {project.createdAt.toLocaleDateString("it-IT", {
           year: "numeric",
           month: "long",

@@ -4,25 +4,29 @@ import { prisma } from "@/lib/prisma"
 import type { Metadata } from "next"
 
 export async function generateMetadata(): Promise<Metadata> {
-  const user = await prisma.user.findFirst()
-  const title = "Contatti"
-  const description = "Contattami per collaborazioni, progetti o informazioni."
-  return {
-    title,
-    description,
-    openGraph: {
+  try {
+    const user = await prisma.user.findFirst()
+    const title = "Contatti"
+    const description = "Contattami per collaborazioni, progetti o informazioni."
+    return {
       title,
       description,
-      images: user?.avatarUrl
-        ? [{ url: user.avatarUrl, width: 1200, height: 630 }]
-        : [{ url: "/api/og?title=Contatti", width: 1200, height: 630 }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: user?.avatarUrl ? [user.avatarUrl] : ["/api/og?title=Contatti"],
-    },
+      openGraph: {
+        title,
+        description,
+        images: user?.avatarUrl
+          ? [{ url: user.avatarUrl, width: 1200, height: 630 }]
+          : [{ url: "/api/og?title=Contatti", width: 1200, height: 630 }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: user?.avatarUrl ? [user.avatarUrl] : ["/api/og?title=Contatti"],
+      },
+    }
+  } catch {
+    return { title: "Contatti" }
   }
 }
 
@@ -31,10 +35,10 @@ export default async function ContactPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
-      <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+      <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
         Contattami
       </h1>
-      <p className="mt-2 text-gray-500">
+      <p className="mt-2 text-muted-foreground">
         Hai un progetto in mente o vuoi semplicemente salutare? Scrivimi!
       </p>
 
@@ -46,12 +50,12 @@ export default async function ContactPage() {
         <aside className="md:col-span-2 space-y-6">
           {user?.email && (
             <div className="flex items-start gap-3">
-              <Mail className="mt-0.5 h-5 w-5 shrink-0 text-gray-400" />
+              <Mail className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
               <div>
-                <p className="font-medium text-sm text-gray-900">Email</p>
+                <p className="font-medium text-sm text-foreground">Email</p>
                 <a
                   href={`mailto:${user.email}`}
-                  className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {user.email}
                 </a>
@@ -61,10 +65,10 @@ export default async function ContactPage() {
 
           {user?.location && (
             <div className="flex items-start gap-3">
-              <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-gray-400" />
+              <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
               <div>
-                <p className="font-medium text-sm text-gray-900">Luogo</p>
-                <p className="text-sm text-gray-500">{user.location}</p>
+                <p className="font-medium text-sm text-foreground">Luogo</p>
+                <p className="text-sm text-muted-foreground">{user.location}</p>
               </div>
             </div>
           )}

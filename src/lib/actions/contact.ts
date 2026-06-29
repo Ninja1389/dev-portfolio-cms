@@ -38,6 +38,15 @@ export async function submitContact(
       },
     })
 
+    await prisma.notification.create({
+      data: {
+        userId: user.id,
+        type: "NEW_MESSAGE",
+        title: "Nuovo messaggio da " + name,
+        body: message.slice(0, 120) + (message.length > 120 ? "..." : ""),
+      },
+    })
+
     await sendContactNotification({
       name,
       email,

@@ -64,6 +64,15 @@ export async function importRepo(
     },
   })
 
+  await prisma.notification.create({
+    data: {
+      userId: session.user.id,
+      type: "GITHUB_SYNC",
+      title: "Repository importato",
+      body: `"${title}" è stato importato con successo.`,
+    },
+  })
+
   revalidatePath("/dashboard/projects")
   revalidatePath("/dashboard/integrations/github")
   return { message: "Repository importato con successo", success: true }
@@ -110,10 +119,27 @@ export async function syncGitHubProjects(): Promise<GithubActionState> {
       updated++
     }
 
+    await prisma.notification.create({
+      data: {
+        userId: session.user.id,
+        type: "GITHUB_SYNC",
+        title: "Sincronizzazione GitHub completata",
+        body: `${updated} progetti aggiornati`,
+      },
+    })
+
     revalidatePath("/dashboard/projects")
     revalidatePath("/dashboard/integrations/github")
     return { message: `${updated} progetti sincronizzati`, success: true }
   } catch {
+    await prisma.notification.create({
+      data: {
+        userId: session.user.id,
+        type: "SYSTEM_ERROR",
+        title: "Errore sincronizzazione GitHub",
+        body: "Impossibile completare la sincronizzazione con GitHub.",
+      },
+    })
     return { message: "Errore durante la sincronizzazione con GitHub", success: false }
   }
 }

@@ -27,8 +27,12 @@ model User {
   heroHeadline  String?
   socialLinks   Json?
   avatarKey     String?
-  theme         String?
-  image         String?
+  theme          String?
+  themeMode      String?
+  accentColor    String?
+  sectionsConfig Json?
+  brandName      String?
+  image          String?
   hashedPassword String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

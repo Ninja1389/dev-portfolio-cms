@@ -28,6 +28,24 @@ export default async function DashboardLayout({
   const session = await auth()
   if (!session?.user) redirect("/login")
 
+  const notifications = await prisma.notification.findMany({
+    where: { userId: session.user.id },
+    orderBy: { createdAt: "desc" },
+    take: 10,
+    select: {
+      id: true,
+      type: true,
+      title: true,
+      body: true,
+      read: true,
+      createdAt: true,
+    },
+  })
+
+  const unreadCount = await prisma.notification.count({
+    where: { userId: session.user.id, read: false },
+  })
+
   return (
     <DashboardShell
       user={{
@@ -35,6 +53,7 @@ export default async function DashboardLayout({
         email: session.user.email ?? null,
       }}
       signOutAction={signOutAction}
+      notifications={{ items: notifications, unread: unreadCount }}
     >
       {children}
     </DashboardShell>

@@ -13,20 +13,33 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { LogoutButton } from "@/components/auth/logout-button"
+import { NotificationBell } from "@/components/dashboard/notification-bell"
+import type { NotificationType } from "@/generated/prisma/client"
 
 type UserData = {
   name?: string | null
   email?: string | null
 }
 
+type NotificationItem = {
+  id: string
+  type: NotificationType
+  title: string
+  body: string | null
+  read: boolean
+  createdAt: Date
+}
+
 export function DashboardHeader({
   user,
   onMenuClick,
   signOutAction,
+  notifications,
 }: {
   user: UserData
   onMenuClick: () => void
   signOutAction: () => Promise<void>
+  notifications: { items: NotificationItem[]; unread: number }
 }) {
   const initials = (user.name ?? user.email ?? "U")
     .slice(0, 2)
@@ -45,6 +58,8 @@ export function DashboardHeader({
       </Button>
 
       <div className="flex-1" />
+
+      <NotificationBell initial={notifications} />
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

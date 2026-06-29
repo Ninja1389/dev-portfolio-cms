@@ -6,19 +6,31 @@ import { Sidebar } from "@/components/dashboard/sidebar"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { Separator } from "@/components/ui/separator"
 import { LogoutButton } from "@/components/auth/logout-button"
+import type { NotificationType } from "@/generated/prisma/client"
 
 type UserData = {
   name: string | null
   email: string | null
 }
 
+type NotificationItem = {
+  id: string
+  type: NotificationType
+  title: string
+  body: string | null
+  read: boolean
+  createdAt: Date
+}
+
 export function DashboardShell({
   user,
   signOutAction,
+  notifications,
   children,
 }: {
   user: UserData
   signOutAction: () => Promise<void>
+  notifications: { items: NotificationItem[]; unread: number }
   children: React.ReactNode
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -59,6 +71,7 @@ export function DashboardShell({
           user={user}
           onMenuClick={() => setSidebarOpen(true)}
           signOutAction={signOutAction}
+          notifications={notifications}
         />
         <main className="flex-1 p-6 lg:p-8">{children}</main>
       </div>

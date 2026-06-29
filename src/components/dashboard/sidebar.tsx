@@ -12,6 +12,7 @@ import {
   GitFork,
   BarChart3,
   Settings,
+  Palette,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -25,6 +26,7 @@ const navItems = [
   { href: "/dashboard/integrations/github", label: "GitHub", icon: GitFork },
   { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/dashboard/settings", label: "Impostazioni", icon: Settings },
+  { href: "/dashboard/settings/appearance", label: "Aspetto", icon: Palette },
 ]
 
 export function Sidebar({ onNavClick }: { onNavClick?: () => void }) {

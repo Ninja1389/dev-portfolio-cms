@@ -121,3 +121,113 @@ export async function login(
   }
   return undefined
 }
+
+const resetRequestSchema = z.object({
+  email: z.string().email("Inserisci un'email valida"),
+})
+
+export type ResetRequestState = {
+  message?: string
+} | undefined
+
+export async function requestPasswordReset(
+  _prev: ResetRequestState,
+  formData: FormData,
+): Promise<ResetRequestState> {
+  const parsed = resetRequestSchema.safeParse({
+    email: formData.get("email"),
+  })
+  if (!parsed.success) {
+    return { message: "Inserisci un'email valida" }
+  }
+
+  const { email } = parsed.data
+  const user = await prisma.user.findUnique({ where: { email } })
+  if (!user) {
+    return { message: "Se l'email è registrata, riceverai un link per il reset." }
+  }
+
+  const token = crypto.randomUUID()
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
+
+  await prisma.passwordResetToken.create({
+    data: { email, token, expiresAt },
+  })
+
+  const { Resend } = await import("resend")
+  const resendApiKey = process.env.RESEND_API_KEY
+  if (resendApiKey) {
+    const resend = new Resend(resendApiKey)
+    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password/${token}`
+    try {
+      await resend.emails.send({
+        from: "Portfolio <onboarding@resend.dev>",
+        to: email,
+        subject: "Reset della password",
+        html: `
+          <h2>Reset della password</h2>
+          <p>Clicca il link per reimpostare la password:</p>
+          <a href="${resetUrl}">${resetUrl}</a>
+          <p>Link valido 1 ora.</p>
+          <p>Se non hai richiesto tu il reset, ignora questa email.</p>
+        `,
+      })
+    } catch {
+      // Email fallito silenziosamente
+    }
+  }
+
+  return { message: "Se l'email è registrata, riceverai un link per il reset." }
+}
+
+const resetPasswordSchema = z.object({
+  token: z.string().min(1),
+  password: z.string().min(8, "Password: almeno 8 caratteri"),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Le password non coincidono",
+  path: ["confirmPassword"],
+})
+
+export type ResetPasswordState = {
+  errors?: {
+    password?: string[]
+    confirmPassword?: string[]
+  }
+  message?: string
+} | undefined
+
+export async function resetPassword(
+  _prev: ResetPasswordState,
+  formData: FormData,
+): Promise<ResetPasswordState> {
+  const parsed = resetPasswordSchema.safeParse({
+    token: formData.get("token"),
+    password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
+  })
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors }
+  }
+
+  const { token, password } = parsed.data
+
+  const resetToken = await prisma.passwordResetToken.findUnique({
+    where: { token },
+  })
+  if (!resetToken || resetToken.expiresAt < new Date()) {
+    return { message: "Token non valido o scaduto" }
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 12)
+  await prisma.user.update({
+    where: { email: resetToken.email },
+    data: { hashedPassword },
+  })
+
+  await prisma.passwordResetToken.delete({
+    where: { id: resetToken.id },
+  })
+
+  return { message: "Password aggiornata con successo. Ora puoi accedere." }
+}

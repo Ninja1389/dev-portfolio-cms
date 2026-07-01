@@ -103,6 +103,13 @@ export function AnalyticsCharts({
                   <Tooltip
                     labelFormatter={(label: unknown) => formatDate(label as string)}
                     formatter={(value: unknown) => [value as number, "Visite"]}
+                    contentStyle={{
+                      background: "#fff",
+                      border: "1px solid #e5e7eb",
+                      borderRadius: "8px",
+                      color: "#000",
+                    }}
+                    cursor={{ fill: "#f3f4f6" }}
                   />
                   <Bar dataKey="views" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                 </BarChart>

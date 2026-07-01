@@ -91,6 +91,10 @@ export async function signInWithGithub() {
   await signIn("github", { redirectTo: "/dashboard" })
 }
 
+export async function connectGithub() {
+  await signIn("github", { redirectTo: "/dashboard/integrations/github" })
+}
+
 export async function login(
   _prev: LoginState,
   formData: FormData,

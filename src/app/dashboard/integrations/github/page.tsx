@@ -2,6 +2,7 @@ import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { fetchUserRepos, GitHubError } from "@/lib/github/client"
 import { GithubIntegrationClient } from "./github-integration-client"
+import { ConnectGithubButton } from "./connect-github-button"
 
 export default async function GithubIntegrationPage() {
   const session = await auth()
@@ -23,10 +24,11 @@ export default async function GithubIntegrationPage() {
             Collega il tuo account GitHub per importare i tuoi repository come progetti.
           </p>
         </div>
-        <div className="rounded-lg border bg-card p-8 text-center">
+        <div className="rounded-lg border bg-card p-8 text-center space-y-4">
           <p className="text-muted-foreground">
-            Account GitHub non collegato. Vai nelle impostazioni per collegarlo tramite OAuth.
+            Account GitHub non collegato.
           </p>
+          <ConnectGithubButton />
         </div>
       </div>
     )

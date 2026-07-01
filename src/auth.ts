@@ -48,9 +48,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id
+      } else if (token.sub) {
+        const exists = await prisma.user.findUnique({ where: { id: token.sub }, select: { id: true } })
+        if (!exists) return null
       }
       return token
     },

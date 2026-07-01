@@ -10,7 +10,7 @@
     "docker:up": "docker compose up --build",
     "docker:dev": "docker compose up -d",
     "docker:down": "docker compose down",
-    "docker:reset": "docker compose down -v",
+    "docker:reset": "docker compose down -v && docker compose up -d && sleep 5 && npx prisma migrate deploy",
     "docker:logs": "docker compose logs -f",
     "docker:logs:app": "docker compose logs -f app",
     "docker:logs:db": "docker compose logs -f db"

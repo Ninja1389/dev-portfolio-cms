@@ -2,7 +2,6 @@ import Link from "next/link"
 
 const settingsNav = [
   { href: "/dashboard/settings", label: "Generali" },
-  { href: "/dashboard/settings/appearance", label: "Aspetto" },
 ]
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {

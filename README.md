@@ -257,3 +257,7 @@ The Prisma schema defines 13 models:
 | `npm run docker:logs` | Tail logs from all services |
 | `npm run docker:logs:app` | Tail logs from the app service only |
 | `npm run docker:logs:db` | Tail logs from the database service only |
+
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).

@@ -1,9 +1,7 @@
 # DevPortfolio CMS
 
 > A developer portfolio CMS with an admin dashboard, analytics, GitHub integration, and a fully
-> customizable public-facing site.
->
-> **Dashboard**: `http://localhost:3000/dashboard` — **Public**: `http://localhost:3000`
+> customizable public-facing site. Self-hosted, no external dependencies.
 
 ## Overview
 
